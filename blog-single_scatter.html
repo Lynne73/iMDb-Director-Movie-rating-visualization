@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <meta charset="utf-8">
+  <title>IMDb rating | popularity Analysis</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+  <!-- slick slider -->
+  <link rel="stylesheet" href="plugins/slick/slick.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="plugins/themify-icons/themify-icons.css">
+
+  <!-- Main Stylesheet -->
+  <link href="css/style.css" rel="stylesheet">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+   
+</head>
+
+<body>
+  <!-- preloader -->
+  <div class="preloader">
+    <div class="loader">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- /preloader -->
+
+
+<!-- page-title -->
+<section class="section bg-secondary">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4>Through years, some director receive both popularity and high-rating.</h4>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /page-title -->
+
+<!-- blog single -->
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <ul class="list-inline d-flex justify-content-between py-3">
+          <li class="list-inline-item"><i class="ti-user mr-2"></i>Post by Zihan LI</li>
+          <li class="list-inline-item"><i class="ti-calendar mr-2"></i>June 8, 2019</li>
+        </ul>
+           
+        <div id="my_dataviz_scatter"></div>
+          <div id="legend" style="display: inline-block"></div>
+
+<!--        <img src="images/post-single.jpg" alt="post-thumb" class="w-100 img-fluid mb-4">-->
+          <script>
+
+// Svg for Scatterplot   
+var margin = {top: 20, right: 50, bottom: 30, left: 80},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var svg0 = d3.select("#my_dataviz_scatter")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("directors_new.csv", function(error, data) {
+  if (error) throw error;
+
+  data.forEach(function(d) {
+    d.averageRating = +d.averageRating;
+    d.meanofRatingNum = +d.meanofRatingNum;
+    d.sumofRatingNum = +d.sumofRatingNum;
+    d.name = d.primaryName;
+  });
+
+    
+var x = d3.scaleLinear()
+    .range([0, width]);
+
+var y = d3.scaleLinear()
+    .range([height, 0]);
+
+var radius = d3.scaleSqrt()
+		.range([2,5]);
+    
+var color = d3.scaleSequential().domain([0,10000000])
+  .interpolator(d3.interpolateYlOrRd);
+
+
+var xAxis = d3.axisBottom(x);
+
+var yAxis = d3.axisLeft(y);
+    
+  x.domain(d3.extent(data, function(d) { return d.averageRating; }));
+  y.domain(d3.extent(data, function(d) { return d.meanofRatingNum; }));
+  radius.domain(d3.extent(data, function(d){ return d.sumofRatingNum; }));
+
+    
+
+    
+  svg0.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .append("text")
+      .attr("class", "director")
+      .attr("x", width)
+      .attr("y", -15)
+      .style("text-anchor", "end")
+      .text("Average Rating");
+
+  svg0.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 600)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Mean Number of Rating")
+
+  var dot = svg0.selectAll(".dot")
+      .data(data)
+    .enter().append("circle")
+      .attr("class", "dot")
+      .attr("r", function(d) {return radius(d.sumofRatingNum);})
+      .attr("cx", function(d) { return x(d.averageRating); })
+      .attr("cy", function(d) { return y(d.meanofRatingNum); })
+      .style("fill", function(d) { return color(d.sumofRatingNum); });
+    
+    
+    dot.append('title')
+			.attr('x', function(d){ return radius(d.meanofRatingNum); })
+			.text(function(d){
+				return "Name: "+d.name;
+			});
+
+
+function continuous(selector_id, colorscale) {
+  var legendheight = 200,
+      legendwidth = 80,
+      margin = {top: 10, right: 60, bottom: 10, left: 2};
+
+  var canvas = d3.select(selector_id)
+    .style("height", legendheight + "px")
+    .style("width", legendwidth + "px")
+    .style("position", "absolute")
+    .append("canvas")
+    .attr("height", legendheight - margin.top - margin.bottom)
+    .attr("width", 1)
+    .style("height", (legendheight - margin.top - margin.bottom) + "px")
+    .style("width", (legendwidth - margin.left - margin.right) + "px")
+    .style("border", "1px solid #000")
+    .style("position", "absolute")
+    .style("top", -400 + "px")
+    .style("left", 202 + "px")
+    .node();
+
+  var ctx = canvas.getContext("2d");
+
+  var legendscale = d3.scaleLinear()
+    .range([1, legendheight - margin.top - margin.bottom])
+    .domain(colorscale.domain());
+
+  // image data hackery based on http://bl.ocks.org/mbostock/048d21cf747371b11884f75ad896e5a5
+  var image = ctx.createImageData(1, legendheight);
+  d3.range(legendheight).forEach(function(i) {
+    var c = d3.rgb(colorscale(legendscale.invert(i)));
+    image.data[4*i] = c.r;
+    image.data[4*i + 1] = c.g;
+    image.data[4*i + 2] = c.b;
+    image.data[4*i + 3] = 255;
+  });
+  ctx.putImageData(image, 0, 0);
+
+  // A simpler way to do the above, but possibly slower. keep in mind the legend width is stretched because the width attr of the canvas is 1
+  // See http://stackoverflow.com/questions/4899799/whats-the-best-way-to-set-a-single-pixel-in-an-html5-canvas
+  /*
+  d3.range(legendheight).forEach(function(i) {
+    ctx.fillStyle = colorscale(legendscale.invert(i));
+    ctx.fillRect(0,i,1,1);
+  });
+  */
+
+  var legendaxis = d3.axisRight()
+    .scale(legendscale)
+    .tickSize(6)
+    .ticks(8);
+
+  var svg0_l = d3.select(selector_id)
+    .append("svg")
+    .attr("height", (legendheight) + "px")
+    .attr("width", (legendwidth) + "px")
+    .style("position", "absolute")
+    .style("left", "198px")
+    .style("top", "-412px")
+
+  svg0_l
+    .append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + (legendwidth - margin.left - margin.right + 3) + "," + (margin.top) + ")")
+    .call(legendaxis)
+    .append("text")
+    .attr("class", "legend")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 100)
+      .attr("x",100)
+      .attr("dy", ".9em")
+      .style("stroke-size","2px")
+      .style("text-anchor", "end")
+      .style("color","black")
+      .text("Total Rating Number");
+};
+    continuous("#legend", color);
+   
+    
+});
+    
+    
+    
+          </script>
+        <div class="content">
+          <blockquote>
+              The X-axis is average rating and Y-axis is the average vote for each movie.<br>
+              Use the legend and the size of bubbles as references to see the total raing votes of this director. Darker and bigger the bubble is, more rating votes this director receives for all of his works.<br>
+              If you want to know which director the point represent, just put you mouse on it!
+          </blockquote>
+            <p>There is a very outstanding director, whose been rated more than 10,000,000 times and has an 8+ average rating. After some online search, this director is Melora Walters, known for a famous movie The Butterfly Effect.</p>
+          <p>Besides, the director who can be clearly seen from the plot that has the highest rating is Jorge A. Jimenez. His most recent famous work is Alita: Battle Angle and he got into this field way latter than Melora, which explained his point size is way smaller.</p>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- /blog single -->
+
+
+<!-- jQuery -->
+<script src="plugins/jQuery/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="plugins/bootstrap/bootstrap.min.js"></script>
+<!-- slick slider -->
+<script src="plugins/slick/slick.min.js"></script>
+<!-- masonry -->
+<script src="plugins/masonry/masonry.js"></script>
+<!-- instafeed -->
+<script src="plugins/instafeed/instafeed.min.js"></script>
+<!-- smooth scroll -->
+<script src="plugins/smooth-scroll/smooth-scroll.js"></script>
+<!-- headroom -->
+<script src="plugins/headroom/headroom.js"></script>
+<!-- reading time -->
+<script src="plugins/reading-time/readingTime.min.js"></script>
+
+<!-- Main Script -->
+<script src="js/script.js"></script>
+
+</body>
+</html>

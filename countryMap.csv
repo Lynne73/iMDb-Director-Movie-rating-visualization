@@ -1,0 +1,164 @@
+id,name,movieNumber
+AFG,Afghanistan,9
+ALB,Albania,267
+DZA,Algeria,48
+AGO,Angola,3
+ARG,Argentina,14121
+ARM,Armenia,55
+ABW,Aruba,4
+AUS,Australia,3150
+AUT,Austria,6886
+AZE,Azerbaijan,262
+BHS,Bahamas,3
+BHR,Bahrain,6
+BGD,Bangladesh,203
+BRB,Barbados,3
+BLR,Belarus,26
+BEL,Belgium,7964
+BEN,Benin,15
+BMU,Bermuda,1
+BTN,Bhutan,4
+BOL,Bolivia,83
+BIH,Bosnia and Herzegovina,353
+BWA,Botswana,1
+BRA,Brazil,28640
+BRN,Brunei Darussalam,1
+BGR,Bulgaria,11139
+BFA,Burkina Faso,35
+KHM,Cambodia,13
+CMR,Cameroon,9
+CAN,Canada,12938
+CPV,Cape Verde,2
+TCD,Chad,3
+CHL,Chile,2772
+CHN,China,1428
+COL,Colombia,1477
+COG,Congo (Brazzaville),1
+COD,"Congo, (Kinshasa)",1
+CRI,Costa Rica,31
+HRV,Croatia,3984
+CUB,Cuba,167
+CYP,Cyprus,14
+CZE,Czech Republic,3054
+CIV,Côte d'Ivoire,5
+DNK,Denmark,15991
+DOM,Dominican Republic,77
+ECU,Ecuador,71
+EGY,Egypt,1256
+SLV,El Salvador,5
+EST,Estonia,2530
+ETH,Ethiopia,4
+FIN,Finland,22572
+FRA,France,29161
+GAB,Gabon,1
+GEO,Georgia,321
+DEU,Germany,15904
+GHA,Ghana,2
+GIB,Gibraltar ,1
+GRC,Greece,25965
+GRL,Greenland,6
+GTM,Guatemala,24
+GNB,Guinea-Bissau,1
+HTI,Haiti,5
+HND,Honduras,1
+HKG,"Hong Kong, SAR China",5473
+HUN,Hungary,22077
+ISL,Iceland,388
+IND,India,11382
+IDN,Indonesia,699
+IRN,"Iran, Islamic Republic of",2222
+IRQ,Iraq,20
+IRL,Ireland,1075
+ISR,Israel,2821
+ITA,Italy,26430
+JAM,Jamaica,18
+JPN,Japan,8778
+JOR,Jordan,3
+KAZ,Kazakhstan,70
+KEN,Kenya,7
+PRK,Korea (North),7
+KOR,Korea (South),1424
+KWT,Kuwait,2
+KGZ,Kyrgyzstan,16
+LAO,Lao PDR,4
+LVA,Latvia,522
+LBN,Lebanon,53
+LBY,Libya,2
+LIE,Liechtenstein,10
+LTU,Lithuania,4374
+LUX,Luxembourg,66
+MKD,"Macedonia, Republic of",65
+MYS,Malaysia,419
+MDV,Maldives,7
+MLI,Mali,12
+MLT,Malta,5
+MRT,Mauritania,3
+MEX,Mexico,12441
+MDA,Moldova,7
+MCO,Monaco,1
+MNG,Mongolia,8
+MNE,Montenegro,2
+MAR,Morocco,51
+MOZ,Mozambique,9
+MMR,Myanmar,3
+NAM,Namibia,1
+NPL,Nepal,24
+NLD,Netherlands,4915
+ANT,Netherlands Antilles,1
+NZL,New Zealand,610
+NIC,Nicaragua,2
+NER,Niger,5
+NGA,Nigeria,16
+NOR,Norway,7107
+OMN,Oman,1
+PAK,Pakistan,132
+PSE,Palestinian Territory,15
+PAN,Panama,213
+PNG,Papua New Guinea,2
+PRY,Paraguay,23
+PER,Peru,3342
+PHL,Philippines,1650
+POL,Poland,22558
+PRT,Portugal,22001
+PRI,Puerto Rico,64
+QAT,Qatar,5
+ROU,Romania,9724
+RUS,Russian Federation,16377
+RWA,Rwanda,3
+SMR,San Marino,5
+SAU,Saudi Arabia,3
+SEN,Senegal,20
+SRB,Serbia,7193
+SLE,Sierra Leone,2
+SGP,Singapore,346
+SVK,Slovakia,1133
+SVN,Slovenia,3874
+ZAF,South Africa,436
+ESP,Spain,26436
+LKA,Sri Lanka,86
+SUR,Suriname,2
+SWZ,Swaziland,1
+SWE,Sweden,17670
+CHE,Switzerland,834
+SYR,Syrian Arab Republic (Syria),16
+TWN,"Taiwan, Republic of China",700
+TJK,Tajikistan,8
+TZA,"Tanzania, United Republic of",2
+THA,Thailand,727
+TON,Tonga,2
+TTO,Trinidad and Tobago,7
+TUN,Tunisia,41
+TUR,Turkey,12908
+TKM,Turkmenistan,7
+UGA,Uganda,7
+UKR,Ukraine,4067
+ARE,United Arab Emirates,9
+GBR,United Kingdom,10272
+USA,United States of America,44718
+URY,Uruguay,3652
+UZB,Uzbekistan,8
+VEN,Venezuela (Bolivarian Republic),2338
+VNM,Viet Nam,1112
+VIR,"Virgin Islands, US",1
+YEM,Yemen,1
+ZWE,Zimbabwe,3

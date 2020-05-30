@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <meta charset="utf-8">
+  <title>IMDb rating | popularity Analysis</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- ** Plugins Needed for the Project ** -->
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+  <!-- slick slider -->
+  <link rel="stylesheet" href="plugins/slick/slick.css">
+  <!-- themefy-icon -->
+  <link rel="stylesheet" href="plugins/themify-icons/themify-icons.css">
+
+  <!-- Main Stylesheet -->
+  <link href="css/style.css" rel="stylesheet">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+   
+</head>
+
+<body>
+  <!-- preloader -->
+  <div class="preloader">
+    <div class="loader">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- /preloader -->
+
+
+<!-- page-title -->
+<section class="section bg-secondary">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4>By the redness of color, we can see audience's comment on movie categories.</h4>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /page-title -->
+
+<!-- blog single -->
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <ul class="list-inline d-flex justify-content-between py-3">
+          <li class="list-inline-item"><i class="ti-user mr-2"></i>Post by Zihan LI</li>
+          <li class="list-inline-item"><i class="ti-calendar mr-2"></i>June 8, 2019</li>
+        </ul>
+           
+        <div id="my_dataviz_heatmap"></div>
+
+<!--        <img src="images/post-single.jpg" alt="post-thumb" class="w-100 img-fluid mb-4">-->
+          <script>
+ 
+// set the dimensions and margins of the graph
+var margin = {top: 30, right: 100, bottom: 30, left: 70},
+  width_h = 1100 - margin.left - margin.right,
+  height_h = 550 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz_heatmap")
+.append("svg")
+  .attr("width", width_h + margin.left + margin.right)
+  .attr("height", height_h + margin.top + margin.bottom)
+.append("g")
+  .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+// Labels of row and columns
+var myGroups = ['Action', 'Comedy', 'Thriller', 'Music', 'War', 'Drama', 'Musical', 'Documentary', 'Adult', 'Fantasy', 'Crime', 'Romance', 'Mystery', 'Animation', 'Sci-Fi', 'Biography', 'Adventure', 'Horror', 'Family', 'Film-Noir', 'History']
+
+var myVars = ['News', 'Comedy', 'Thriller', 'Music', 'War', 'Sport', 'Drama', 'Musical', 'Documentary', 'Adult', 'Fantasy', 'Crime', 'Western', 'Romance', 'Mystery', 'Animation', 'Sci-Fi', 'Biography', 'Adventure', 'Horror', 'Family', 'Film-Noir', 'History']
+
+// Build X scales and axis:
+var x = d3.scaleBand()
+  .range([ 0, width_h ])
+  .domain(myGroups)
+  .padding(0.01);
+svg.append("g")
+  .attr("transform", "translate(0," + height_h + ")")
+  .attr("font-family","fantasy,cursive,monospace")
+  .call(d3.axisBottom(x))
+
+// Build Y scales and axis:
+var y = d3.scaleBand()
+  .range([ height_h, 0 ])
+  .domain(myVars)
+  .padding(0.01);
+svg.append("g")
+  .call(d3.axisLeft(y));
+
+// Build color scale
+var myColor = d3.scaleLinear()
+  .range(["#008cf4","#399c39","#f4e300", "#ff2b05"])
+  .domain([1,3,6,10])
+
+// create a tooltip
+  var tooltip = d3.select("#my_dataviz_heatmap")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "1px")
+    
+
+  // Three function that change the tooltip when user hover / move / leave a cell
+  var mouseover = function(d) {
+    tooltip
+      .style("opacity", 1)
+    d3.select(this)
+      .style("stroke", "#9b9999")
+      .style("opacity", 1)
+
+  }
+  var mousemove = function(d) {
+    tooltip
+      .html("When the main genre is " + d.group + " and the sub genre is " + d.variable + ",the average raing is: " + d.value)
+      .style("left", (margin.left-60 + "px"))
+      .style("top", (margin.top+20 + "px"))
+      .style("font-family","fantasy,cursive,monospace")
+      .style("font-size","15px")
+      .style("border","0px")
+      .style("padding-left", "100px")
+      .style("color","#de5f1b")
+
+  }
+  var mouseleave = function(d) {
+    tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("stroke", "none")
+      .style("opacity", 0.8)
+  }
+
+
+//Read the data
+d3.csv("heatmap.csv", function(data) {
+
+  svg.selectAll()
+      .data(data, function(d) {return d.group+':'+d.variable;})
+      .enter()
+      .append("rect")
+      .attr("x", function(d) { return x(d.group) })
+      .attr("y", function(d) { return y(d.variable) })
+      .attr("width", x.bandwidth() )
+      .attr("height", y.bandwidth() )
+      .style("fill", function(d) { return myColor(d.value)} )
+      .style("stroke-width", 4)
+      .style("stroke", "none")
+      .style("opacity", 1)
+      .on("mouseover", mouseover)
+      .on("mousemove", mousemove)
+      .on("mouseleave", mouseleave)
+
+})
+
+
+          </script>
+        <div class="content">
+          <blockquote>
+              X-axis shows the Main genre and Y-axis shows the sub genres. <br>
+              Hover on one rectangular, you can see the average rating of this main-sub genre combination. 
+              <br>Redder the color is, higher-rated this category is.
+          </blockquote>
+          <p>The color of each rectangular represents the average rating of this genre combination!</p>
+          <p>For example: History + Sci-Fi means if you want to see a historical movie and you should avoid those whose sub-genre is Sci-Fi. It will be a disaster. However, for the combination of Animation + History, it can be very successful. It's average rating can be as high as 8.3!</p>
+          <p>So try to choose the type combinations that has redder color to avoid landmines!</p>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- /blog single -->
+
+
+<!-- jQuery -->
+<script src="plugins/jQuery/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="plugins/bootstrap/bootstrap.min.js"></script>
+<!-- slick slider -->
+<script src="plugins/slick/slick.min.js"></script>
+<!-- masonry -->
+<script src="plugins/masonry/masonry.js"></script>
+<!-- instafeed -->
+<script src="plugins/instafeed/instafeed.min.js"></script>
+<!-- smooth scroll -->
+<script src="plugins/smooth-scroll/smooth-scroll.js"></script>
+<!-- headroom -->
+<script src="plugins/headroom/headroom.js"></script>
+<!-- reading time -->
+<script src="plugins/reading-time/readingTime.min.js"></script>
+
+<!-- Main Script -->
+<script src="js/script.js"></script>
+
+</body>
+</html>
